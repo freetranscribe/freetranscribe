@@ -56,7 +56,7 @@ print(asr.transcribe(["recording.wav"])[0].text)
 With the recipe, for long recordings:
 
 ```sh
-uv tool install "freetranscribe[nemo] @ git+https://github.com/freetranscribe/freetranscribe"
+uv tool install "freetranscribe[nemo]"
 freetranscribe transcribe recording.wav
 ```
 

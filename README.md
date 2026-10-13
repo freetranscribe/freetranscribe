@@ -9,10 +9,10 @@ The [model card](https://huggingface.co/freetranscribe/parakeet-ft-v1) has the r
 With [uv](https://docs.astral.sh/uv/), as a command:
 
 ```sh
-uv tool install "freetranscribe[nemo] @ git+https://github.com/freetranscribe/freetranscribe"
+uv tool install "freetranscribe[nemo]"
 ```
 
-Or into a project, with `uv add` or `pip install` and the same specifier.
+Or into a project, with `uv add "freetranscribe[nemo]"` or `pip install "freetranscribe[nemo]"`.
 
 It needs Python 3.10 or later. The `nemo` extra pulls in NeMo and PyTorch, which are several gigabytes.
 
