@@ -1,0 +1,39 @@
+[build-system]
+requires = ["hatchling==1.32.4"]
+build-backend = "hatchling.build"
+
+[project]
+name = "freetranscribe"
+version = "0.1.0"
+description = "Open tooling from FreeTranscribe.org: decoding for NVIDIA Parakeet models, including long recordings"
+readme = "README.md"
+keywords = ["speech-recognition", "asr", "parakeet", "nemo", "long-form"]
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = ["numpy", "soundfile", "soxr"]
+
+[project.optional-dependencies]
+# NeMo leaves transformers unbounded, and without a floor the resolver can pick a 2021 release
+# that has no wheels for current Pythons.
+nemo = ["nemo_toolkit[asr]>=2.5", "torch", "transformers>=5"]
+
+[project.urls]
+Homepage = "https://github.com/freetranscribe/freetranscribe"
+Source = "https://github.com/freetranscribe/freetranscribe"
+
+[project.scripts]
+freetranscribe = "freetranscribe.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/freetranscribe"]
+
+# The published package is the MIT code only. The adapted leaderboard script (Apache-2.0) and
+# the model card stay in the repository.
+[tool.hatch.build.targets.sdist]
+exclude = ["/leaderboard", "/model-card", "/.github"]
+
+[tool.ruff]
+line-length = 100
+# A modified copy of an upstream script, kept close to its original.
+extend-exclude = ["leaderboard"]
