@@ -32,10 +32,10 @@ Word error rate (WER) in percent on the long-form sets of the [Open ASR Leaderbo
 | Dataset | v3, leaderboard decoding | v3, recipe | This model, leaderboard decoding | This model, recipe |
 | --- | ---: | ---: | ---: | ---: |
 | Earnings-21 | 9.40 | 8.11 | 7.62 | 6.97 |
-| Earnings-22 (development set) | 13.75 | 11.14 | 10.82 | 10.08 |
+| Earnings-22 (development set) | 13.75 | 11.14 | 10.82 | 10.13 |
 | CORAAL, mean of 8 subsets | 14.48 | 13.08 | 13.21 | 12.33 |
 | TED-LIUM | 2.47 | 2.29 | 1.95 | 1.95 |
-| Mean of Earnings-21, Earnings-22 and CORAAL, as the leaderboard ranks | 12.54 | 10.78 | 10.55 | 9.79 |
+| Mean of Earnings-21, Earnings-22 and CORAAL, as the leaderboard ranks | 12.54 | 10.78 | 10.55 | 9.81 |
 | Mean of the three held-out sets: Earnings-21, CORAAL and TED-LIUM | 8.78 | 7.83 | 7.59 | 7.08 |
 
 The recipe and the fine-tuning stack: this model with the recipe is best or tied in every row.
@@ -93,18 +93,18 @@ The recipe does three things differently from a plain whole-recording `transcrib
 2. It cuts the recording at pauses into pieces of at most 90 seconds and decodes the pieces in batches. The pause score is short-time energy, and each cut goes at the quietest point in the second half of the allowed length, the min-cut rule from [WhisperX](https://arxiv.org/abs/2303.00747) (Bain et al., 2023).
 3. It decodes each piece with 5 seconds of extra audio on both sides and keeps each word only from the piece its midpoint falls inside.
 
-The next table shows what each step adds on Earnings-22 (125 earnings calls, about 985,000 reference words). Each row adds one step to the row above. This table and the settings after it were scored with an earlier version of the leaderboard's scorer, which reads about 0.2 points higher on this set than the results table.
+The next table shows what each step adds on Earnings-22 (125 earnings calls, about 985,000 reference words). Each row adds one step to the row above.
 
 | Decoding | v3 | parakeet-ft-v1 |
 | --- | ---: | ---: |
-| Whole recording, 128-frame attention | 13.94 | 11.00 |
-| Plus 256-frame attention | 12.95 | 10.52 |
-| Plus cuts at pauses, 90 seconds at most | 11.32 | 10.36 |
-| Plus 5 seconds of overlap | 11.34 | 10.27 |
+| Whole recording, 128-frame attention | 13.75 | 10.82 |
+| Plus 256-frame attention | 12.76 | 10.33 |
+| Plus cuts at pauses, 90 seconds at most | 11.12 | 10.17 |
+| Plus 5 seconds of overlap | 11.14 | 10.13 |
 
-Wider attention and cutting help both models, and cutting helps v3 far more. The overlap helps only the fine-tuned model: on v3 the last two rows are within run-to-run variation. This model loads with 256-frame attention already. On v3 it is one line in plain NeMo: `asr.change_attention_model("rel_pos_local_attn", [256, 256])`.
+Wider attention and cutting help both models, and cutting helps v3 far more. The overlap adds little: under 0.1 points on the fine-tuned model and nothing on v3. This model loads with 256-frame attention already. On v3 it is one line in plain NeMo: `asr.change_attention_model("rel_pos_local_attn", [256, 256])`.
 
-I chose the settings on Earnings-22 with the fine-tuned model and 256-frame attention, without overlap unless stated:
+I chose the settings on Earnings-22 with the fine-tuned model and 256-frame attention, without overlap unless stated. These scores are from an earlier version of the leaderboard's scorer, which reads about 0.2 points higher on this set than the tables above:
 
 - Piece length: 20 seconds scored 10.95, 30 seconds 10.68, 45 seconds 10.52 and 60 seconds 10.40. From 90 to 600 seconds the scores tie, so I picked 90, which needs the least memory. The 30-second habit comes from Whisper, which can't take more.
 - Pause detector: energy, WebRTC's recurrent-network detector and its older Gaussian-mixture detector scored 10.68, 10.65 and 10.74 at 30 seconds. I kept energy, which needs no extra dependencies.
@@ -118,7 +118,7 @@ Recordings of 90 seconds or less are not cut, so only the wider attention applie
 
 - Nothing was trained on any of these sets. I used Earnings-22 only to choose between checkpoints and recipe settings. Earnings-21, CORAAL and TED-LIUM played no part in any choice.
 - My v3 scores with leaderboard decoding are 0.6 to 1.1 points better than the ones listed on the leaderboard. Compare the table's columns with each other, not with other people's runs.
-- Scores with the recipe repeat to within a few hundredths of a point from run to run. v3 decoded whole varies by a few tenths.
+- Scores with the recipe repeat to within a few hundredths of a point from run to run: four runs of this model on Earnings-22 gave 10.08, 10.10, 10.11 and 10.13. v3 decoded whole varies by a few tenths.
 - I measured everything with bfloat16 weights and greedy decoding, and scored with the leaderboard's current scorer.
 - The repository's [`leaderboard/`](https://github.com/freetranscribe/freetranscribe/tree/main/leaderboard) directory has the evaluation script and the dataset revisions.
 
