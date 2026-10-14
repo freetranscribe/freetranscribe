@@ -104,13 +104,13 @@ The next table shows what each step adds on Earnings-22 (125 earnings calls, abo
 
 Wider attention and cutting help both models, and cutting helps v3 far more. The overlap adds little: under 0.1 points on the fine-tuned model and nothing on v3. This model loads with 256-frame attention already. On v3 it is one line in plain NeMo: `asr.change_attention_model("rel_pos_local_attn", [256, 256])`.
 
-I chose the settings on Earnings-22 with the fine-tuned model and 256-frame attention, without overlap unless stated. These scores are from an earlier version of the leaderboard's scorer, which reads about 0.2 points higher on this set than the tables above:
+I chose the settings on Earnings-22 with the fine-tuned model and 256-frame attention, without overlap unless stated:
 
-- Piece length: 20 seconds scored 10.95, 30 seconds 10.68, 45 seconds 10.52 and 60 seconds 10.40. From 90 to 600 seconds the scores tie, so I picked 90, which needs the least memory. The 30-second habit comes from Whisper, which can't take more.
-- Pause detector: energy, WebRTC's recurrent-network detector and its older Gaussian-mixture detector scored 10.68, 10.65 and 10.74 at 30 seconds. I kept energy, which needs no extra dependencies.
-- Cutting blind: fixed 30-second windows scored 10.88, worse than cutting at pauses on 112 of 125 calls.
-- Dropping silence: the full "cut and merge" from WhisperX, which discards audio between speech regions, scored 10.82 at 30 seconds. I tried one threshold setting.
-- Overlap: 2 seconds made no measurable difference, 5 seconds helped, and 10 seconds added nothing over 5.
+- Piece length: 20 seconds scored 10.76, 30 seconds 10.49, 45 seconds 10.32 and 60 seconds 10.22. From 90 to 600 seconds the scores tie between 10.10 and 10.19, so I picked 90, which needs the least memory. The 30-second habit comes from Whisper, which can't take more.
+- Pause detector: energy, WebRTC's recurrent-network detector and its older Gaussian-mixture detector scored 10.49, 10.45 and 10.55 at 30 seconds. I kept energy, which needs no extra dependencies.
+- Cutting blind: fixed 30-second windows scored 10.69, worse than cutting at pauses on 113 of 125 calls.
+- Dropping silence: the full "cut and merge" from WhisperX, which discards audio between speech regions, scored 10.63 at 30 seconds. I tried one threshold setting.
+- Overlap: 2 seconds scored 10.15, 5 seconds 10.08 to 10.13 over four runs, and 10 seconds 10.05 in one run. The differences are about the size of the run-to-run spread.
 
 Recordings of 90 seconds or less are not cut, so only the wider attention applies to them. The recipe is about a fifth slower than decoding a recording whole.
 
