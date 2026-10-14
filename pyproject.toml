@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "freetranscribe"
-version = "0.1.0"
+version = "0.1.1"
 description = "Open tooling from FreeTranscribe.org: decoding for NVIDIA Parakeet models, including long recordings"
 readme = "README.md"
 keywords = ["speech-recognition", "asr", "parakeet", "nemo", "long-form"]
