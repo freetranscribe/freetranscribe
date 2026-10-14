@@ -41,6 +41,9 @@ def load_model(model: str, device: str = "cuda") -> Any:
     if asr.cfg.decoding.strategy != "beam":
         with open_dict(asr.cfg.decoding):
             asr.cfg.decoding.strategy = "greedy_batch"
+            # NeMo's CUDA-graph greedy decoder stops with an illegal memory access on some
+            # recordings, so decode with the plain one.
+            asr.cfg.decoding.greedy.use_cuda_graph_decoder = False
         asr.change_decoding_strategy(asr.cfg.decoding, verbose=False)
     return asr
 

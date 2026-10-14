@@ -5,6 +5,7 @@
 # overlap) instead of one whole-recording NeMo transcribe call with 128-frame local attention.
 # Audio samples that arrive as decoder objects, as current datasets releases produce, are read
 # through their "array" key.
+# With --longform the CUDA-graph greedy decoder is turned off.
 import argparse
 
 import io
@@ -18,6 +19,7 @@ from normalizer import data_utils
 import numpy as np
 
 from nemo.collections.asr.models import ASRModel
+from omegaconf import open_dict
 import time
 
 from freetranscribe.parakeet.decode import ATTENTION_CONTEXT, MAX_SECONDS, OVERLAP_SECONDS
@@ -52,6 +54,10 @@ def main(args):
        
     if args.longform:
         asr_model.change_attention_model("rel_pos_local_attn", list(ATTENTION_CONTEXT))
+        # NeMo's CUDA-graph greedy decoder stops with an illegal memory access on some
+        # recordings, the CORAAL LES subset among them, so decode with the plain one.
+        with open_dict(asr_model.cfg.decoding):
+            asr_model.cfg.decoding.greedy.use_cuda_graph_decoder = False
     asr_model.to(compute_dtype)
     asr_model.eval()
     print(f"Model size: {sum(p.numel() for p in asr_model.parameters()) / 1e9:.2f}B parameters")
