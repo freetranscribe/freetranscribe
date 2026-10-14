@@ -3,6 +3,8 @@
 # LICENSE in this directory. Changes: with --longform each recording is decoded by
 # freetranscribe.parakeet (256-frame local attention, pause cuts of at most 90 seconds, 5 seconds of
 # overlap) instead of one whole-recording NeMo transcribe call with 128-frame local attention.
+# Audio samples that arrive as decoder objects, as current datasets releases produce, are read
+# through their "array" key.
 import argparse
 
 import io
@@ -67,7 +69,9 @@ def main(args):
             # Use a unique filename based on global index
             audio_path = os.path.join(CACHE_DIR, f"sample_{global_idx}.wav")
 
-            if "array" in sample:
+            # Current datasets releases hand over a decoder object, which has "array" but
+            # does not support the "in" test.
+            if not isinstance(sample, dict) or "array" in sample:
                 audio_array = np.float32(sample["array"])
                 sample_rate = 16000
 
