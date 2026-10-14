@@ -6,6 +6,7 @@
 # Audio samples that arrive as decoder objects, as current datasets releases produce, are read
 # through their "array" key.
 # With --longform the CUDA-graph greedy decoder is turned off.
+# With --longform the untimed warmup decodes one recording.
 import argparse
 
 import io
@@ -137,7 +138,10 @@ def main(args):
     total_time = 0
     for _ in range(2): # warmup once and calculate rtf
         if _ == 0:
-            audio_files = all_data["audio_filepaths"][:args.batch_size * 4] # warmup with 4 batches
+            # With --longform, batch_size counts pieces of one recording, and one recording
+            # already fills several batches.
+            warmup = 1 if args.longform else args.batch_size * 4
+            audio_files = all_data["audio_filepaths"][:warmup] # warmup with 4 batches
         else:
             audio_files = all_data["audio_filepaths"]
         start_time = time.time()

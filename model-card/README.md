@@ -112,7 +112,7 @@ I chose the settings on Earnings-22 with the fine-tuned model and 256-frame atte
 - Dropping silence: the full "cut and merge" from WhisperX, which discards audio between speech regions, scored 10.63 at 30 seconds. I tried one threshold setting.
 - Overlap: 2 seconds scored 10.15, 5 seconds 10.08 to 10.13 over four runs, and 10 seconds 10.05 in one run. The differences are about the size of the run-to-run spread.
 
-Recordings of 90 seconds or less are not cut, so only the wider attention applies to them. The recipe is about a fifth slower than decoding a recording whole.
+Recordings of 90 seconds or less are not cut, so only the wider attention applies to them. The recipe runs at about half the speed of decoding a recording whole.
 
 ### Comparing with other numbers
 
