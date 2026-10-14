@@ -31,12 +31,12 @@ Word error rate (WER) in percent on the long-form sets of the [Open ASR Leaderbo
 
 | Dataset | v3, leaderboard decoding | v3, recipe | This model, leaderboard decoding | This model, recipe |
 | --- | ---: | ---: | ---: | ---: |
-| Earnings-21 | 9.57 | 8.28 | 7.80 | 7.15 |
-| Earnings-22 (development set) | 13.94 | 11.34 | 11.00 | 10.27 |
-| CORAAL, mean of 8 subsets | 15.45 | 14.06 | 14.25 | 13.36 |
-| TED-LIUM | 2.53 | 2.31 | 2.00 | 1.99 |
-| Mean of Earnings-21, Earnings-22 and CORAAL, as the leaderboard ranks | 12.99 | 11.23 | 11.02 | 10.26 |
-| Mean of the three held-out sets: Earnings-21, CORAAL and TED-LIUM | 9.18 | 8.22 | 8.02 | 7.50 |
+| Earnings-21 | 9.40 | 8.11 | 7.62 | 6.97 |
+| Earnings-22 (development set) | 13.75 | 11.14 | 10.82 | 10.08 |
+| CORAAL, mean of 8 subsets | 14.48 | 13.08 | 13.21 | 12.33 |
+| TED-LIUM | 2.47 | 2.29 | 1.95 | 1.95 |
+| Mean of Earnings-21, Earnings-22 and CORAAL, as the leaderboard ranks | 12.54 | 10.78 | 10.55 | 9.79 |
+| Mean of the three held-out sets: Earnings-21, CORAAL and TED-LIUM | 8.78 | 7.83 | 7.59 | 7.08 |
 
 The recipe and the fine-tuning stack: this model with the recipe is best or tied in every row.
 
@@ -93,7 +93,7 @@ The recipe does three things differently from a plain whole-recording `transcrib
 2. It cuts the recording at pauses into pieces of at most 90 seconds and decodes the pieces in batches. The pause score is short-time energy, and each cut goes at the quietest point in the second half of the allowed length, the min-cut rule from [WhisperX](https://arxiv.org/abs/2303.00747) (Bain et al., 2023).
 3. It decodes each piece with 5 seconds of extra audio on both sides and keeps each word only from the piece its midpoint falls inside.
 
-The next table shows what each step adds on Earnings-22 (125 earnings calls, about 985,000 reference words). Each row adds one step to the row above.
+The next table shows what each step adds on Earnings-22 (125 earnings calls, about 985,000 reference words). Each row adds one step to the row above. This table and the settings after it were scored with an earlier version of the leaderboard's scorer, which reads about 0.2 points higher on this set than the results table.
 
 | Decoding | v3 | parakeet-ft-v1 |
 | --- | ---: | ---: |
@@ -117,9 +117,9 @@ Recordings of 90 seconds or less are not cut, so only the wider attention applie
 ### Comparing with other numbers
 
 - Nothing was trained on any of these sets. I used Earnings-22 only to choose between checkpoints and recipe settings. Earnings-21, CORAAL and TED-LIUM played no part in any choice.
-- My v3 scores are 0.1 to 0.6 points better than the published ones, with the leaderboard's settings on my own machine. Compare the table's columns with each other, not with other people's runs.
+- My v3 scores with leaderboard decoding are 0.6 to 1.1 points better than the ones listed on the leaderboard. Compare the table's columns with each other, not with other people's runs.
 - Scores with the recipe repeat to within a few hundredths of a point from run to run. v3 decoded whole varies by a few tenths.
-- I measured everything with bfloat16 weights and greedy decoding, and scored with the leaderboard's normalizer.
+- I measured everything with bfloat16 weights and greedy decoding, and scored with the leaderboard's current scorer.
 - The repository's [`leaderboard/`](https://github.com/freetranscribe/freetranscribe/tree/main/leaderboard) directory has the evaluation script and the dataset revisions.
 
 ## License and credit

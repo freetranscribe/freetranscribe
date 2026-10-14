@@ -9,6 +9,6 @@ To reproduce the results table on the [model card](https://huggingface.co/freetr
 - Data: [hf-audio/asr-leaderboard-longform](https://huggingface.co/datasets/hf-audio/asr-leaderboard-longform) at revision `74e296a`, the last to include TED-LIUM, and [bezzam/coraal](https://huggingface.co/datasets/bezzam/coraal).
 - Recipe columns: run this script with `--longform --device 0 --batch_size 8`.
 - Leaderboard-decoding columns: run the Space's unmodified script.
-- Scoring: the normalizer and compound-aware word alignment from the [leaderboard repository](https://github.com/huggingface/open_asr_leaderboard) at commit `090df12`.
+- Scoring: `scripts/score_bucket_results.py --family longform` from the [leaderboard repository](https://github.com/huggingface/open_asr_leaderboard) at commit `60e2e3b`.
 
 The script and `LICENSE` in this directory are under the Apache License 2.0, as upstream. Everything else in the repository is MIT.
