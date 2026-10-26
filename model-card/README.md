@@ -15,7 +15,7 @@ tags:
 
 # parakeet-ft-v1
 
-A fine-tune of [NVIDIA Parakeet TDT 0.6B v3](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) for long recordings. v3 sometimes skips whole passages of a long recording, and this model almost never does: on 16 recordings kept out of training, v3 skipped 87 passages and this model 3. Same architecture, same tokenizer, same 0.6B parameters, loadable with [NeMo](https://github.com/NVIDIA-NeMo/Speech) like the original. It loads with the local attention it was trained with, so long recordings fit in memory without extra settings.
+A fine-tune of [NVIDIA Parakeet TDT 0.6B v3](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) for long recordings. v3 sometimes skips whole passages of a long recording, and this model almost never does: on 16 recordings kept out of training, v3 skipped 87 passages and this model 3. Same architecture, same tokenizer, same 0.6B parameters, loadable with [NeMo](https://github.com/NVIDIA-NeMo/Speech) like the original. It loads with the local attention it was trained with, so long recordings fit in memory without extra settings. [FreeTranscribe.org](https://freetranscribe.org/) uses it for every transcription.
 
 It was trained only on its own output. No person wrote or corrected a transcript, and no other speech recognizer was involved.
 
@@ -40,7 +40,7 @@ Word error rate (WER) in percent on the long-form sets of the [Open ASR Leaderbo
 
 The recipe and the fine-tuning stack: this model with the recipe is best or tied in every row.
 
-These are my own runs on one RTX 3090. The model isn't on the leaderboard yet.
+These are my own runs on one RTX 3090. The leaderboard team reran the recipe on an H200 and got the same 9.81 average (6.98, 10.09 and 12.35 on the three ranked sets). As of 2026-10-26 this model is third of 13 on the [long-form leaderboard](https://huggingface.co/spaces/hf-audio/open_asr_leaderboard) and first among models with open weights, behind ElevenLabs Scribe v2 (8.44) and Reson8 resonant-1 (9.74).
 
 ## Usage
 
@@ -117,7 +117,7 @@ Recordings of 90 seconds or less are not cut, so only the wider attention applie
 ### Comparing with other numbers
 
 - Nothing was trained on any of these sets. I used Earnings-22 only to choose between checkpoints and recipe settings. Earnings-21, CORAAL and TED-LIUM played no part in any choice.
-- My v3 scores with leaderboard decoding are 0.6 to 1.1 points better than the ones listed on the leaderboard. Compare the table's columns with each other, not with other people's runs.
+- The leaderboard's own run of v3 is within a third of a point of mine on each set, 12.60 against 12.54 on average. Compare the table's columns with each other rather than with other people's runs.
 - Scores with the recipe repeat to within a few hundredths of a point from run to run: four runs of this model on Earnings-22 gave 10.08, 10.10, 10.11 and 10.13. v3 decoded whole varies by a few tenths.
 - I measured everything with bfloat16 weights and greedy decoding, and scored with the leaderboard's current scorer.
 - The repository's [`leaderboard/`](https://github.com/freetranscribe/freetranscribe/tree/main/leaderboard) directory has the evaluation script and the dataset revisions.
