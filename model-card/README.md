@@ -27,7 +27,7 @@ It was trained only on its own output. No person wrote or corrected a transcript
 
 ## Results
 
-Word error rate (WER) in percent on the long-form sets of the [Open ASR Leaderboard](https://huggingface.co/spaces/hf-audio/open_asr_leaderboard), lower is better. "Leaderboard decoding" is the leaderboard's own NeMo script, which decodes the whole recording in one call. "Recipe" is a decoding recipe for long recordings published at [freetranscribe/freetranscribe](https://github.com/freetranscribe/freetranscribe), which also works on v3 without fine-tuning.
+With the recipe, this model ranks third of 13 on the [Open ASR Leaderboard](https://huggingface.co/spaces/hf-audio/open_asr_leaderboard)'s long-form test with a 9.81% average word error rate (WER), and first among models with open weights. Only ElevenLabs Scribe v2 (8.44%) and Reson8 resonant-1 (9.74%) score lower, as of 2026-10-26. The table gives WER in percent, lower is better. "Leaderboard decoding" is the leaderboard's own NeMo script, which decodes the whole recording in one call. "Recipe" is a decoding recipe for long recordings published at [freetranscribe/freetranscribe](https://github.com/freetranscribe/freetranscribe), which also works on v3 without fine-tuning.
 
 | Dataset | v3, leaderboard decoding | v3, recipe | This model, leaderboard decoding | This model, recipe |
 | --- | ---: | ---: | ---: | ---: |
@@ -39,8 +39,6 @@ Word error rate (WER) in percent on the long-form sets of the [Open ASR Leaderbo
 | Mean of the three held-out sets: Earnings-21, CORAAL and TED-LIUM | 8.78 | 7.83 | 7.59 | 7.08 |
 
 The recipe and the fine-tuning stack: this model with the recipe is best or tied in every row.
-
-These are my own runs on one RTX 3090. The leaderboard team reran the recipe on an H200 and got the same 9.81 average (6.98, 10.09 and 12.35 on the three ranked sets). As of 2026-10-26 this model is third of 13 on the [long-form leaderboard](https://huggingface.co/spaces/hf-audio/open_asr_leaderboard) and first among models with open weights, behind ElevenLabs Scribe v2 (8.44) and Reson8 resonant-1 (9.74).
 
 ## Usage
 
