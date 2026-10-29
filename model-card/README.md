@@ -124,4 +124,4 @@ Recordings of 90 seconds or less are not cut, so only the wider attention applie
 
 CC-BY-4.0, the same as the base model. This is a derivative of [nvidia/parakeet-tdt-0.6b-v3](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) by NVIDIA, which did almost all of the work.
 
-This model learned one thing from the harness behind [FreeTranscribe.org](https://freetranscribe.org/). The service runs the whole harness.
+This model learned one thing from the harness behind [FreeTranscribe.org](https://freetranscribe.org/). With this model the harness added almost nothing, so the service now runs the model on its own.
